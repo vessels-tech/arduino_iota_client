@@ -4,6 +4,22 @@
 // #include <ESP8266HTTPClient.h>
 #include <WiFiClientSecure.h>
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+// C header here
+#include "external/iota-c-light-wallet/src/iota/addresses.h"
+#include "external/iota-c-light-wallet/src/iota/conversion.h"
+#include "external/iota-c-light-wallet/src/iota/transfers.h"
+#include "user_interface.h"
+
+
+#ifdef __cplusplus
+}
+#endif
+
 
 String _host;
 String _port;
@@ -21,6 +37,61 @@ IotaClient::IotaClient(String host, String port)
   Serial.println(port);
 
   //Maybe this needs to take an ESP client object?
+}
+
+void IotaClient::testAddress() {
+  unsigned char address[81];
+  // unsigned char address[] = "MZAVTZUNZ9EUWGYCSCGLSTONFRFISEWBOMXBIFNFJAGWTOBBDXMJ9KRNPJLJXWCYGEGMYDAAIWOCRHFTZ";
+  char seedChars[] = "THISISABADSEED999";
+  unsigned char seedBytes[48];
+  chars_to_bytes(seedChars, seedBytes, 81);
+  
+  //This is causing a crash :(
+  //perhaps because it's trying to do POW?
+  get_public_addr(seedBytes, 0, 2, address);
+  Serial.print("address is: ");
+  Serial.println((char *)address);
+
+  char charAddress[81];
+  bytes_to_chars(address, charAddress, 48);
+
+  Serial.print("charAddress is: ");
+  Serial.println((char *)charAddress);
+  //WARNING - I think this didn't get processed properly...
+}
+
+/**
+ * prepareTransfers
+ * attachToTangle (external shim?)
+ * broadcast and store transactions locally?
+ */
+void IotaClient::sendTransfer() {
+  Serial.println("sendTransfer");
+  char *seed = "THISISABADSEED999"; // 81 ternary characters
+  char address_one[82] = {0};
+  char address_two[82] = {0};
+  char *tag = "IOTAONARDUINO999"; //27 ternary characters
+
+  //Define the output array, where the coins must go to.
+  TX_OUTPUT output_txs[] = {{"ANADDRESS", 10000, "THISISAMESSAGE", "TTAG"}}; //ANADDRESS => 81 ternary characters
+  // TX_OUTPUT output_txs[1];
+
+  //Define the input array. Where the coins come from
+  // TX_INPUT input_txs[] = {{4, 10000}};
+  TX_INPUT input_txs[0];
+
+
+  //Define the transaction chars array. The char trytes will saved in this array. (base-27 encoded)
+  char transaction_chars[10][2673];
+  // char transaction_bytes[10][1584];
+  //Get all raw transaction trytes. Will saved in transaction_chars
+  create_transfer_chars(seed, 2, output_txs, 1, input_txs, 0, transaction_chars);
+  // create_transfer_bytes(seed, 2, output_txs, 1, input_txs, 0, transaction_bytes);
+
+  Serial.print("transaction_chars are:");
+  Serial.println((char *)transaction_chars);
+  
+
 }
 
 void IotaClient::testRequest(WiFiClientSecure* client) {
@@ -56,7 +127,6 @@ void IotaClient::testRequest(WiFiClientSecure* client) {
 }
 
 
-
 // void IotaClient::testRequest(HTTPClient* http) {
 //   //  HTTPClient http;
 //   Serial.print("[HTTP] begin...\n");
@@ -84,5 +154,4 @@ void IotaClient::testRequest(WiFiClientSecure* client) {
 //   }
 
 //   http->end();
-
 // }
