@@ -36,5 +36,5 @@ void IotaClient::testAddress()
   bytes_to_chars(address, charAddress, 48);
 
   Serial.print("charAddress is: ");
-  Serial.println((char *)charAddress);
+  Serial.println(charAddress);
 }
