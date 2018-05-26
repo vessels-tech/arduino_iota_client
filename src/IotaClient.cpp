@@ -2,7 +2,7 @@
 #include "IotaClient.h"
 #include "external/Morse/Morse.h"
 // #include <ESP8266HTTPClient.h>
-#include <WiFiClientSecure.h>
+// #include <WiFiClientSecure.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -13,7 +13,7 @@ extern "C"
 #include "external/iota-c-light-wallet/src/iota/addresses.h"
 #include "external/iota-c-light-wallet/src/iota/conversion.h"
 #include "external/iota-c-light-wallet/src/iota/transfers.h"
-#include "user_interface.h"
+// #include "user_interface.h"
 
 
 #ifdef __cplusplus

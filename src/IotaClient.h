@@ -7,7 +7,7 @@
 
 //This must also be in the libraries folder!
 // #include <ESP8266HTTPClient.h>
-#include <WiFiClientSecure.h>
+// #include <WiFiClientSecure.h>
 
 #ifdef __cplusplus
 extern "C"
