@@ -1,0 +1,3 @@
+[submodule "src/external/iota-c-light-wallet"]
+	path = src/external/iota-c-light-wallet
+	url = https://github.com/vessels-tech/iota-c-light-wallet.git
